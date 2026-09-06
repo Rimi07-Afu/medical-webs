@@ -1,0 +1,6 @@
+{
+  "name": "Midhya Medical Store",
+  "description": "Local pharmacy and medical store in Bargokulpur, Kharagpur offering medicines, healthcare essentials, prescription ordering, and local home delivery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

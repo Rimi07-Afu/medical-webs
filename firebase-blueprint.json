@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Medicine or healthcare product in Midhya Medical Store inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "genericName": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 60 },
+        "price": { "type": "number" },
+        "discountPrice": { "type": "number" },
+        "packSize": { "type": "string", "maxLength": 60 },
+        "manufacturer": { "type": "string", "maxLength": 100 },
+        "requiresPrescription": { "type": "boolean" },
+        "inStock": { "type": "boolean" },
+        "stockCount": { "type": "number" },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "price", "inStock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer medicine order for pickup or delivery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerUid": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 20 },
+        "customerEmail": { "type": "string", "maxLength": 120 },
+        "deliveryType": { "type": "string", "enum": ["delivery", "pickup"] },
+        "deliveryAddress": { "type": "string", "maxLength": 300 },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "packed", "out_for_delivery", "completed", "cancelled"] },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "customerPhone", "deliveryType", "items", "totalAmount", "status"]
+    },
+    "Prescription": {
+      "title": "Prescription",
+      "description": "Prescription uploaded by a customer for verification and dispensing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerUid": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 20 },
+        "customerEmail": { "type": "string", "maxLength": 120 },
+        "patientName": { "type": "string", "maxLength": 100 },
+        "patientAge": { "type": "string", "maxLength": 20 },
+        "deliveryAddress": { "type": "string", "maxLength": 300 },
+        "prescriptionImageData": { "type": "string" },
+        "status": { "type": "string", "enum": ["submitted", "under_review", "verified_quoted", "dispensed", "rejected"] },
+        "pharmacistNotes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerName", "customerPhone", "prescriptionImageData", "status"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account information and saved delivery details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "maxLength": 120 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 300 },
+        "city": { "type": "string", "maxLength": 60 },
+        "pincode": { "type": "string", "maxLength": 10 },
+        "role": { "type": "string", "enum": ["customer", "admin"] }
+      },
+      "required": ["id", "email"]
+    },
+    "ShopSettings": {
+      "title": "ShopSettings",
+      "description": "Store operational settings, opening hours, and contact details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 25 },
+        "whatsapp": { "type": "string", "maxLength": 25 },
+        "address": { "type": "string", "maxLength": 250 },
+        "hours": { "type": "string", "maxLength": 150 },
+        "isOpen": { "type": "boolean" },
+        "announcement": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["name", "phone", "address", "hours"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catalog of medicines, surgical items, and OTC health products."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer purchase orders for medicines and health products."
+    },
+    "/prescriptions/{prescriptionId}": {
+      "schema": "Prescription",
+      "description": "Uploaded medical prescriptions from customers."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with saved contact and delivery address."
+    },
+    "/shopSettings/{settingId}": {
+      "schema": "ShopSettings",
+      "description": "Store contact details, hours, and announcements."
+    }
+  }
+}
