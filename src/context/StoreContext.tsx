@@ -70,7 +70,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       },
       (error) => {
-        handleFirestoreError(error, OperationType.GET, 'shopSettings/current');
+        console.warn('Could not load shop settings from Firestore, using default:', error);
+        setShopSettings(DEFAULT_SHOP_SETTINGS);
       }
     );
 

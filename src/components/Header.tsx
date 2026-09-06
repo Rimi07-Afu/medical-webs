@@ -22,8 +22,8 @@ interface HeaderProps {
   onOpenAuth: () => void;
   onOpenProfile: () => void;
   onOpenAdmin: () => void;
-  activeSection: string;
-  setActiveSection: (section: string) => void;
+  activeSection?: string;
+  setActiveSection?: (section: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAuth,
   onOpenProfile,
   onOpenAdmin,
-  activeSection,
+  activeSection = 'home',
   setActiveSection,
 }) => {
   const { user, isAdmin, logout } = useAuth();
@@ -69,8 +69,12 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'contact', label: 'Contact & Location' },
   ];
 
+  const [currentSection, setCurrentSection] = useState(activeSection);
+  const active = activeSection || currentSection;
+
   const handleNavClick = (id: string) => {
-    setActiveSection(id);
+    setCurrentSection(id);
+    setActiveSection?.(id);
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
@@ -159,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
               key={item.id}
               onClick={() => handleNavClick(item.id)}
               className={`text-sm font-semibold transition-colors cursor-pointer ${
-                activeSection === item.id
+                active === item.id
                   ? 'text-emerald-900 border-b-2 border-emerald-500 pb-1 font-bold'
                   : 'text-emerald-800 hover:text-emerald-500'
               }`}
@@ -179,8 +183,9 @@ export const Header: React.FC<HeaderProps> = ({
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                if (activeSection !== 'products') {
-                  setActiveSection('products');
+                if (active !== 'products') {
+                  setCurrentSection('products');
+                  setActiveSection?.('products');
                   document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
@@ -296,7 +301,7 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={`w-full text-left py-2 px-3 rounded-md text-sm font-semibold ${
-                  activeSection === item.id ? 'bg-emerald-50 text-emerald-800 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                  active === item.id ? 'bg-emerald-50 text-emerald-800 font-bold' : 'text-slate-700 hover:bg-slate-50'
                 }`}
               >
                 {item.label}
